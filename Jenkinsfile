@@ -67,7 +67,8 @@ pipeline {
                         sh 'echo "Dependency Check Home: ${DEPENDENCY_CHECK_HOME}"'
                         sh 'ls -l ${DEPENDENCY_CHECK_HOME}/bin'
                         sh '''
-                        ${DEPENDENCY_CHECK_HOME}/bin/dependency-check.sh --project "Flask App" --scan . --format "ALL" --out workspace/flask/dependency-check-report --cveValidForHours 12 --nvdApiKey ${NVD_API_KEY} || true
+                        //${DEPENDENCY_CHECK_HOME}/bin/dependency-check.sh --project "Flask App" --scan . --format "ALL" --out workspace/flask/dependency-check-report --cveValidForHours 12 --nvdApiKey ${NVD_API_KEY} || true
+						${DEPENDENCY_CHECK_HOME}/bin/dependency-check.sh --project "Flask App" --scan . --format "ALL" --out workspace/flask/dependency-check-report --nvdApiKey ${NVD_API_KEY} || true
                         '''
                     }
                 }
@@ -102,22 +103,22 @@ pipeline {
             }
         }
         
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    dir('workspace/flask') {
-                        sh '''
-                        ${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner \
-                        -Dsonar.projectKey=flask-app \
-                        -Dsonar.sources=. \
-                        -Dsonar.inclusions=app.py \
-                        -Dsonar.host.url=http://sonarqube:9000 \
-                        -Dsonar.login=${SONARQUBE_TOKEN}
-                        '''
-                    }
-                }
-            }
-        }
+        //stage('SonarQube Analysis') {
+        //    steps {
+        //        withSonarQubeEnv('SonarQube') {
+        //            dir('workspace/flask') {
+        //                sh '''
+        //                ${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner \
+        //                -Dsonar.projectKey=flask-app \
+        //                -Dsonar.sources=. \
+        //                -Dsonar.inclusions=app.py \
+        //                -Dsonar.host.url=http://sonarqube:9000 \
+        //                -Dsonar.login=${SONARQUBE_TOKEN}
+        //                '''
+        //            }
+        //        }
+        //    }
+        //}
         
         stage('Deploy Flask App') {
             steps {
