@@ -1,11 +1,8 @@
 from flask import Flask, request, render_template
-from flask_wtf.csrf import CSRFProtect
 import re
 import requests
 
 app = Flask(__name__)
-# app.secret_key = 'your_secret_key'  # Set a strong secret key
-# csrf = CSRFProtect(app)
 
 COMMON_PASSWORDS_URL = 'https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/10-million-password-list-top-1000.txt'
 common_passwords = set(requests.get(COMMON_PASSWORDS_URL).text.splitlines())
