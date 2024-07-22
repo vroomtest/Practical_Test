@@ -1,4 +1,4 @@
-version: '3.8'  # Specify the version of the Docker Compose file format
+version: '3.8'
 
 services:
   # Jenkins service configuration
@@ -39,4 +39,4 @@ services:
       MYSQL_PASSWORD: sonarqube  
 
 volumes:
-  jenkins_home:  
+  jenkins_home:
