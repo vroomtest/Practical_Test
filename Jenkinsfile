@@ -113,7 +113,7 @@ pipeline {
 							-Dsonar.projectKey=flask-app \
 							-Dsonar.sources=. \
 							-Dsonar.inclusions=app.py \
-							-Dsonar.host.url=http://127.0.0.1:9000 \
+							-Dsonar.host.url=http://sonarqube:9000 \
 							-Dsonar.login=${SONARQUBE_TOKEN}
 							'''
 						}
