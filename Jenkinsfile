@@ -85,7 +85,7 @@ pipeline {
                             FLASK_APP=$FLASK_APP_PATH flask run &
                             sleep 5
                             curl -s http://127.0.0.1:5000 || echo "Flask app did not start"
-                            curl -s -X POST -F "password=StrongPass123" http://127.0.0.1:5000 | grep "Welcome"
+                            curl -s -X POST -F "password=5TrongP@ssw0rd" http://127.0.0.1:5000 | grep "Welcome"
                             curl -s -X POST -F "password=password" http://127.0.0.1:5000 | grep "Password does not meet the requirements"
                             pkill -f "flask run"
                             set -e
@@ -113,7 +113,7 @@ pipeline {
 							-Dsonar.projectKey=flask-app \
 							-Dsonar.sources=. \
 							-Dsonar.inclusions=app.py \
-							-Dsonar.host.url=http://localhost:9000 \
+							-Dsonar.host.url=http://127.0.0.1:9000 \
 							-Dsonar.login=${SONARQUBE_TOKEN}
 							'''
 						}
