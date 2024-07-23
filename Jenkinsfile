@@ -59,21 +59,30 @@ pipeline {
             }
         }
 		
-        stage('Dependency Check') {
-            steps {
-                withCredentials([string(credentialsId: 'NVD_API_KEY', variable: 'NVD_API_KEY')]) {
-                    script {
-                        sh 'mkdir -p workspace/flask/dependency-check-report'
-                        sh 'echo "Dependency Check Home: ${DEPENDENCY_CHECK_HOME}"'
-                        sh 'ls -l ${DEPENDENCY_CHECK_HOME}/bin'
-                        sh '''
-                        //${DEPENDENCY_CHECK_HOME}/bin/dependency-check.sh --project "Flask App" --scan . --format "ALL" --out workspace/flask/dependency-check-report --cveValidForHours 12 --nvdApiKey ${NVD_API_KEY} || true
-						${DEPENDENCY_CHECK_HOME}/bin/dependency-check.sh --project "Flask App" --scan . --format "ALL" --out workspace/flask/dependency-check-report --nvdApiKey ${NVD_API_KEY} || true
-                        '''
-                    }
-                }
-            }
-        }
+        //stage('Dependency Check') {
+            //steps {
+                //withCredentials([string(credentialsId: 'NVD_API_KEY', variable: 'NVD_API_KEY')]) {
+                    //script {
+                        //sh 'mkdir -p workspace/flask/dependency-check-report'
+                        //sh 'echo "Dependency Check Home: ${DEPENDENCY_CHECK_HOME}"'
+                        //sh 'ls -l ${DEPENDENCY_CHECK_HOME}/bin'
+                        //sh '''
+                        ////${DEPENDENCY_CHECK_HOME}/bin/dependency-check.sh --project "Flask App" --scan . --format "ALL" --out workspace/flask/dependency-check-report --cveValidForHours 12 --nvdApiKey ${NVD_API_KEY} || true
+						//${DEPENDENCY_CHECK_HOME}/bin/dependency-check.sh --project "Flask App" --scan . --format "ALL" --out workspace/flask/dependency-check-report --nvdApiKey ${NVD_API_KEY} || true
+                        //'''
+                    //}
+                //}
+            //}
+        //}
+		
+		 stage('OWASP DependencyCheck') {
+			steps {
+				withCredentials([string(credentialsId: 'NVD_API_Key', variable: 'NVD_API_KEY')]) {
+					dependencyCheck additionalArguments: "-o './' -s './' -f 'ALL' --prettyPrint --nvdApiKey ${env.NVD_API_KEY}", odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+					dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+				}
+			}
+		}
         
         stage('UI Testing') {
             steps {
